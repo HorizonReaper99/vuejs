@@ -8,37 +8,251 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="main.css">
 </head>
+<html>
 <body>
-    <script src="main.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <div id="app">
-        <h1>{{ quiz.title }}</h1>
-        <div v-for="(question, index) in quiz.questions">
-          <div v-show="index === questionIndex">
-            <h2>{{ question.text }}</h2>
-            <ol>
-              <li v-for="response in question.responses">
-                
-                  <input type="radio" 
-                         v-bind:value="response.correct" 
-                         v-bind:name="index" 
-                         v-model="userResponses[index]"> 
-                         
-                         {{ questions.response.text }}
-              </li>
-            </ol>
-            <button v-if="questionIndex > 0" v-on:click="prev">prev</button>
-            <button v-on:click="next">next</button>
-          </div>
-        </div>
-        <div v-show="questionIndex === quiz.questions.length">
-          <h2>
-          Quiz finished
-        </h2>
-          <p>
-            Total score: {{ score() }} / {{ quiz.questions.length }}
-          </p>
-        </div>
+  
+  <div id="app">
+    <h1>{{ quiz.title }}</h1>
+    <!-- index is used to check with current question index -->
+    <div v-for="(question, index) in quiz.questions">
+      <!-- Hide all questions, show only the one with index === to current question index -->
+      <div v-show="index === questionIndex">
+        <h2>{{ question.text }}</h2>
+        <ol>
+          <li v-for="response in question.responses">
+            <label>
+              <!-- The radio button has three new directives -->
+              <!-- v-bind:value sets "value" to "true" if the response is correct -->
+              <!-- v-bind:name sets "name" to question index to group answers by question -->
+              <!-- v-model creates binding with userResponses -->
+              <input type="radio" 
+                     v-bind:value="response.correct" 
+                     v-bind:name="index" 
+                     v-model="userResponses[index]"> {{response.text}}
+            </label>
+          </li>
+        </ol>
+        <!-- The two navigation buttons -->
+        <!-- Note: prev is hidden on first question -->
+        <button v-if="questionIndex > 0" v-on:click="prev">
+          prev
+        </button>
+        <button v-on:click="next">
+          next
+        </button>
       </div>
+    </div>
+    <div v-show="questionIndex === quiz.questions.length">
+      <h2>
+      Quiz finished
+    </h2>
+      <p>
+        Total score: {{ score() }} / {{ quiz.questions.length }}
+      </p>
+    </div>
+  </div>
+  
+  <!-- Load Vue script -->
+  <script src="https://vuejs.org/js/vue.js"></script>
+  <!-- On load, init Vue -->
+  <script>
+    window.onload=function(){
+      // Create a quiz object with a title and two questions.
+      // A question has one or more answer, and one or more is valid.
+      var quiz = {
+        title: 'My quiz',
+        questions: [
+          {
+            text: "1.Who created the first plane?",
+            responses: [
+              {text: 'Scott Brothers'}, 
+              {text: 'Wright Brothers', correct: true},
+              {text: 'Steven Brothers'},
+              {text: 'Salvator Brothers'},
+            ]
+          }, {
+            text: "2.Who was the first major character to die to Vampire Diaries?",
+            responses: [
+              {text: 'Rose', correct: true}, 
+              {text: 'Alaric Saltzman'}, 
+              {text:'Stefan Salvatore'},
+              {text:'Liz Forbes'},
+            ]
+          }, {
+            text: "3.Who Crested Apex Legends?",
+              responses: [
+                {text: 'EA', correct: true},
+                {text: 'Epic Games'},
+                {text: 'Activision'},
+                {text: 'Ubisoft'},
+            ]
+          }, {
+                text: "4.Who holds the record of consectutive ball'on dor wins in a row?",
+                responses:[
+                    {text:'Messi', correct: true},
+                    {text:'Ronaldo'},
+                    {text:'Kaka'},
+                    {text:'Zidane'},
+                ]
+            }, {
+                text: "5.How long was WWII",
+                responses:[
+                    {text:'5 years'},
+                    {text:'32 years'},
+                    {text:'6 years', correct: true},
+                    {text:'7 years'},
+                ]
+            }, {
+                text: "6.Who discovered America first?",
+                responses:[
+                    {text:'Leif Erksson', correct:true},
+                    {text:'Christopher Columbus'},
+                    {text:'Van Riebeeck'},
+                    {text:'Donald Trump'},
+                ]
+            }, {
+                text: "7.Who wrote Harry Potter?",
+                responses:[
+                    {text:'J.K Rowling', correct: true},
+                    {text:'J.R.R. Tolkien'},
+                    {text:'Stephen King'},
+                    {text:'Alan Rickman'},
+                ]
+            }, {
+                text: "8.Who made the first car?",
+                responses:[
+                    {text:'Wilhem Maybach'},
+                    {text:'Henry Ford'},
+                    {text:'Rudolf Diesel'},
+                    {text:'Karl Benz', correct: true},
+                ]
+            }, {
+                text:"9.Who made the first gun?",
+                responses:[
+                    {text:'China', correct: true},
+                    {text:'Middle East'},
+                    {text:'Europe'},
+                    {text:'Texas'},
+                ]
+            }, {
+                text:"10.What is Bill Gates net worth?",
+                responses:[
+                    {text:'$95.6 billion'},
+                    {text:'$97.4 billion', correct:true},
+                    {text:'$98.9 billion'},
+                    {text:'$99.9 billion'},
+                ]
+            }, {
+                text:"11.Who is the richest person in the world?",
+                responses:[
+                    {text:'Warren Buffet'},
+                    {text:'Bill Gates'},
+                    {text:'Donald Trump'},
+                    {text:'Jeff Bezos', correct:true},
+                ]
+            }, {
+                text:"12.Which is the fastest car?",
+                responses:[
+                    {text:'Hennessy Vemon F5', correct:true},
+                    {text:'SSC Tuatara'},
+                    {text:'Koenigsegg Agera RS'},
+                    {text:'Hennessey Vemon GT'},
+                ]
+            }, {
+                text: "13.What is the slowest car in the world?",
+                responses:[
+                    {text:'Aixam Coupe'},
+                    {text:'Peel P50', correct:true},
+                    {text:'Renault Twizy'},
+                    {text:'Hindustan Ambassador 1.5 DSZ'},
+                ]
+            }, {
+                text: "14.Who is England's Prime Minister?",
+                responses:[
+                    {text:'David Cameron'},
+                    {text:'Gordon Brown'},
+                    {text:'Theresa May', correct:true},
+                    {text:'John Major'},
+                ]
+            }, {
+                text: "15.What is the Middle East known for?",
+                responses:[
+                    {text:'War'},
+                    {text:'Wealth'},
+                    {text:'Religion'},
+                    {text:'Oil', correct:true},
+                ]
+            }, {
+                text: "16.Who took down Osama bin laden?",
+                responses:[
+                    {text:'Russia'},
+                    {text:'China'},
+                    {text:'England'},
+                    {text:'USA', correct:true},
+                ]
+            }, {
+                text: "17.Who creaed DC comics?",
+                responses:[
+                    {text:'Malcolm Wheeler-Nicholson', correct:true},
+                    {text:'Stan Lee'},
+                    {text:'Steve Ditko'},
+                    {text:'Joe Shuster'},
+                ]
+            }, {
+                text:"18.Who plays Jack Sparrow?",
+                responses:[
+                    {text:'Brad Pitt'},
+                    {text:'Johnny Depp', correct:true},
+                    {text:'Leanardo DiCaprio'},
+                    {text:'Orlando Bloom'},
+                ]
+            }, {
+                text:"19.Who created the theme song Star Wars?",
+                responses:[
+                    {text:'Harrison Ford'},
+                    {text:'Steven Spielberg'},
+                    {text:'George Lucas'},
+                    {text:'John Williams', correct:true},
+                ]
+            }, {
+                text:"20.How many milisconds are there in a year?",
+                responses:[
+                    {text:'31556952000', correct:true},
+                    {text:'31556952001'},
+                    {text:'31556952010'},
+                    {text:'31556952020'},
+                ]
+            } 
+        ]
+      };
+            
+      new Vue({
+        el: '#app',
+        data: {
+          quiz: quiz,
+          // Store current question index
+          questionIndex: 0,
+          // An array initialized with "false" values for each question
+          // It means: "did the user answered correctly to the question n?" "no".
+          userResponses: Array(quiz.questions.length).fill(false)
+        },
+        // The view will trigger these methods on click
+        methods: {
+          // Go to next question
+          next: function() {
+            this.questionIndex++;
+          },
+          // Go to previous question
+          prev: function() {
+            this.questionIndex--;
+          },
+          // Return "true" count in userResponses
+          score: function() {
+            return this.userResponses.filter(function(val) { return val }).length;
+          }
+        }
+      });
+    }
+  </script>
 </body>
 </html>

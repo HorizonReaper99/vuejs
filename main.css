@@ -1,5 +1,5 @@
 body{
-    background-color:white;
+    background-color:grey;
 }
 
 #app { 
@@ -7,6 +7,6 @@ body{
     margin: 0px;
     padding: 250px;
     font-size: 20px;
-    background-color:blue;
+    background-color:rgb(124, 124, 124);
     color: #fff;
   }
